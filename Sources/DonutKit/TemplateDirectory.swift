@@ -82,7 +82,12 @@ public struct TemplateDirectory {
     }
 
     public static func removeDirectory(url: URL) -> SignalProducer<String, DonutError> {
-        let taskDescription = Task("/usr/bin/env", arguments: ["rm", "-rf", "\(url.host!)/\(url.path)"], workingDirectoryPath: TemplateDirectory.basePath.path, environment: nil)
+        let taskDescription = Task(
+            "/usr/bin/env",
+            arguments: ["rm", "-rf", "\(TemplateDirectory.basePath.path)/\(url.host!)/\(url.path)"],
+            workingDirectoryPath: TemplateDirectory.homeDirectory.path,
+            environment: nil
+        )
         return taskDescription.launch()
             .ignoreTaskData()
             .mapError(DonutError.taskError)
@@ -92,7 +97,12 @@ public struct TemplateDirectory {
     }
 
     public static func makeDirectory(url: URL) -> SignalProducer<String, DonutError> {
-        let taskDescription = Task("/usr/bin/env", arguments: ["mkdir", "-p", "\(url.host!)/\(url.path)"], workingDirectoryPath: TemplateDirectory.basePath.path, environment: nil)
+        let taskDescription = Task(
+            "/usr/bin/env",
+            arguments: ["mkdir", "-p", "\(TemplateDirectory.basePath.path)/\(url.host!)/\(url.path)"],
+            workingDirectoryPath: TemplateDirectory.homeDirectory.path,
+            environment: nil
+        )
         return taskDescription.launch()
             .ignoreTaskData()
             .mapError(DonutError.taskError)
@@ -102,7 +112,12 @@ public struct TemplateDirectory {
     }
 
     public static func removeTemplate(template: Template) -> SignalProducer<String, DonutError> {
-        let taskDescription = Task("/usr/bin/env", arguments: ["rm", "-rf", "\(template.path.path)"], workingDirectoryPath: TemplateDirectory.basePath.path, environment: nil)
+        let taskDescription = Task(
+            "/usr/bin/env",
+            arguments: ["rm", "-rf", "\(TemplateDirectory.basePath.path)/\(template.path.path)"],
+            workingDirectoryPath: TemplateDirectory.homeDirectory.path,
+            environment: nil
+        )
 
         return taskDescription.launch()
             .ignoreTaskData()
